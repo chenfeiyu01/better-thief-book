@@ -7,25 +7,27 @@ class Book {
   constructor(extensionContext) {
     this.curr_page_number = 1;
     this.page_size = 50;
-    this.page = 0;
+    this.totalPage = 0; // 总页数
     this.start = 0;
     this.end = this.page_size;
     this.filePath = "";
     this.extensionContext;
     this.extensionContext = extensionContext;
 
+    this.text = "";
+
     if (!Book.instance) {
       console.log("Book.instance init");
-      this.init();
       Book.instance = this;
+      this.init();
     }
 
     return Book.instance;
   }
 
-  getSize(text) {
-    let size = text.length;
-    this.page = Math.ceil(size / this.page_size);
+  getSize() {
+    let size = this.text.length;
+    this.totalPage = Math.ceil(size / this.page_size);
   }
 
   getFileName() {
@@ -46,8 +48,8 @@ class Book {
         page = curr_page - 1;
       }
     } else if (type === "next") {
-      if (curr_page >= this.page) {
-        page = this.page;
+      if (curr_page >= this.totalPage) {
+        page = this.totalPage;
       } else {
         page = curr_page + 1;
       }
@@ -83,7 +85,7 @@ class Book {
       .getConfiguration()
       .get("thief-mud-game.lineBreak");
 
-    return data
+    this.text = data
       .toString()
       .replace(/\n/g, line_break)
       .replace(/\r/g, " ")
@@ -105,51 +107,43 @@ class Book {
     } else {
       this.page_size = pageSize;
     }
+    this.readFile();
+    this.getSize();
   }
 
   getPreviousPage() {
-    let text = this.readFile();
-
-    this.getSize(text);
     this.getPage("previous");
     this.getStartEnd();
 
     var page_info =
-      this.curr_page_number.toString() + "/" + this.page.toString();
+      this.curr_page_number.toString() + "/" + this.totalPage.toString();
 
     this.updatePage();
-    return text.substring(this.start, this.end) + "    " + page_info;
+    return this.text.substring(this.start, this.end) + "    " + page_info;
   }
 
   getNextPage() {
-    let text = this.readFile();
-
-    this.getSize(text);
     this.getPage("next");
     this.getStartEnd();
-    console.log("text =", this.curr_page_number);
 
     var page_info =
-      this.curr_page_number.toString() + "/" + this.page.toString();
+      this.curr_page_number.toString() + "/" + this.totalPage.toString();
 
     this.updatePage();
 
-    return text.substring(this.start, this.end) + "    " + page_info;
+    return this.text.substring(this.start, this.end) + "    " + page_info;
   }
 
   getJumpingPage() {
-    let text = this.readFile();
-
-    this.getSize(text);
     this.getPage("curr");
     this.getStartEnd();
 
     var page_info =
-      this.curr_page_number.toString() + "/" + this.page.toString();
+      this.curr_page_number.toString() + "/" + this.totalPage.toString();
 
     this.updatePage();
 
-    return text.substring(this.start, this.end) + "    " + page_info;
+    return this.text.substring(this.start, this.end) + "    " + page_info;
   }
 }
 
