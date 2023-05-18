@@ -14,8 +14,13 @@ class Book {
     this.extensionContext;
     this.extensionContext = extensionContext;
 
-    console.log("Book init");
-    this.init();
+    if (!Book.instance) {
+      console.log("Book.instance init");
+      this.init();
+      Book.instance = this;
+    }
+
+    return Book.instance;
   }
 
   getSize(text) {
@@ -103,7 +108,6 @@ class Book {
   }
 
   getPreviousPage() {
-
     let text = this.readFile();
 
     this.getSize(text);
@@ -118,7 +122,6 @@ class Book {
   }
 
   getNextPage() {
-
     let text = this.readFile();
 
     this.getSize(text);
@@ -135,7 +138,6 @@ class Book {
   }
 
   getJumpingPage() {
-
     let text = this.readFile();
 
     this.getSize(text);
