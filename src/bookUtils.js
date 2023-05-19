@@ -33,7 +33,6 @@ class Book {
 
   getFileName() {
     var file_name = this.filePath.split("/").pop();
-    console.log(file_name);
     return file_name;
   }
 
@@ -219,6 +218,7 @@ class Book {
           return;
         }
         let bookmark = {
+          id: this.bookTitle + this.curr_page_number,
           describe: value,
           bookTitle: this.bookTitle,
           curr_page_number: this.curr_page_number,
@@ -252,7 +252,6 @@ class Book {
             {
               iconPath: new ThemeIcon("trash"),
               tooltip: "删除书签",
-              id: bookmark.describe,
             },
           ],
         };
@@ -283,11 +282,15 @@ class Book {
           // 清空bookmarks
           this.extensionContext.globalState.update("bookmarks", []).then(() => {
             // 提示删除成功
-            window.showInformationMessage("删除所有书签成功1");
+            window.showInformationMessage("删除所有书签成功");
             // 关闭quickPick
             quickPick.hide();
           });
-        } else if (button.tooltip === "删除书签") {
+        }
+      });
+
+      quickPick.onDidTriggerItemButton(({ button, item }) => {
+        if (button.tooltip === "删除书签") {
           // 删除单个书签
           // 从bookmarks中删除
           let bookmarks = this.extensionContext.globalState.get(
@@ -295,14 +298,19 @@ class Book {
             []
           );
           bookmarks = bookmarks.filter(
-            (bookmark) => bookmark.describe !== quickPick.selectedItems[0].label
+            (bookmark) => bookmark.describe !== item.label
           );
           this.extensionContext.globalState
             .update("bookmarks", bookmarks)
             .then(() => {
               // 提示删除成功，刷新书签列表
-              window.showInformationMessage("删除书签成功1");
-              this.getBookMarkList();
+              window.showInformationMessage("删除书签成功");
+              // 如果还有书签，刷新书签列表，如果没有书签，关闭quickPick
+              if (bookmarks.length > 0) {
+                this.getBookMarkList();
+              } else {
+                quickPick.hide();
+              }
             });
         }
       });
