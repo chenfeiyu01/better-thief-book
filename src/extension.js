@@ -71,16 +71,43 @@ function activate(context) {
   );
 
   // 重新加载数据
-  let reloadBook = commands.registerCommand("thief-mud-game.reloadBook", async () => {
-    let books = new Book(context);
-    window.setStatusBarMessage(await books.reloadBook());
-  });
+  let reloadBook = commands.registerCommand(
+    "thief-mud-game.reloadBook",
+    async () => {
+      let books = new Book(context);
+      window.setStatusBarMessage(await books.reloadBook());
+    }
+  );
+
+  // 添加书签
+  let addBookMark = commands.registerCommand(
+    "thief-mud-game.addBookMark",
+    async () => {
+      let books = new Book(context);
+      // 调用添加书签的方法
+      // 在vscode中显示提示信息
+      window.showInformationMessage(await books.addBookMark());
+    }
+  );
+
+  // 展示书签列表
+  let showBookMarkList = commands.registerCommand(
+    "thief-mud-game.showBookMarkList",
+    async () => {
+      let books = new Book(context);
+      // 打开下拉列表，展示书签列表
+      const content = await books.getBookMarkList();
+      window.setStatusBarMessage(content);
+    }
+  );
 
   context.subscriptions.push(displayCode);
   context.subscriptions.push(getNextPage);
   context.subscriptions.push(getPreviousPage);
   context.subscriptions.push(getJumpingPage);
   context.subscriptions.push(reloadBook);
+  context.subscriptions.push(addBookMark);
+  context.subscriptions.push(showBookMarkList);
 }
 
 // this method is called when your extension is deactivated

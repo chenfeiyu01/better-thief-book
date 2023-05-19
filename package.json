@@ -38,6 +38,14 @@
       {
         "command": "thief-mud-game.reloadBook",
         "title": "thief-mud-game.ReloadBook"
+      },
+      {
+        "command": "thief-mud-game.addBookMark",
+        "title": "thief-mud-game.AddBookMark"
+      },
+      {
+        "command": "thief-mud-game.showBookMarkList",
+        "title": "thief-mud-game.ShowBookMarkList"
       }
     ],
     "keybindings": [
@@ -62,6 +70,11 @@
         "command": "thief-mud-game.displayCode",
         "key": "ctrl+m",
         "mac": "cmd+m"
+      },
+      {
+        "command": "thief-mud-game.addBookMark",
+        "key": "ctrl+alt+'",
+        "mac": "cmd+'"
       }
     ],
     "configuration": {

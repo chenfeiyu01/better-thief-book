@@ -1,6 +1,6 @@
 // import { ExtensionContext, workspace, window } from "vscode";
 // import * as fs from "fs";
-const { workspace, window } = require("vscode");
+const { workspace, window, ThemeIcon } = require("vscode");
 const fs = require("fs");
 
 class Book {
@@ -13,6 +13,7 @@ class Book {
     this.filePath = "";
     this.extensionContext;
     this.extensionContext = extensionContext;
+    this.bookTitle = "";
 
     this.text = "";
 
@@ -33,6 +34,7 @@ class Book {
   getFileName() {
     var file_name = this.filePath.split("/").pop();
     console.log(file_name);
+    return file_name;
   }
 
   getPage(type) {
@@ -106,6 +108,7 @@ class Book {
       this.page_size = pageSize;
     }
     this.readFile();
+    this.bookTitle = this.getFileName();
     this.getSize();
     this.curr_page_number = workspace
       .getConfiguration()
@@ -196,6 +199,116 @@ class Book {
       .update("thief-mud-game.currPageNumber", 1, true);
     this.init();
     return this.getJumpingPage(1);
+  }
+
+  // 添加书签
+  addBookMark() {
+    // 弹出输入框，输入书签describe
+    // 输入书签后，保存书签
+    return window
+      .showInputBox({
+        placeHolder: "请输入书签描述",
+        validateInput: (text) => {
+          if (text === "") {
+            return "请输入书签描述";
+          }
+        },
+      })
+      .then((value) => {
+        if (value === undefined) {
+          return;
+        }
+        let bookmark = {
+          describe: value,
+          bookTitle: this.bookTitle,
+          curr_page_number: this.curr_page_number,
+          totalPage: this.totalPage,
+          filePath: this.filePath,
+        };
+
+        let bookmarks = this.extensionContext.globalState.get("bookmarks", []);
+        bookmarks.push(bookmark);
+        return this.extensionContext.globalState
+          .update("bookmarks", bookmarks)
+          .then(() => {
+            return `为${this.bookTitle}添加书签成功`;
+          });
+      });
+  }
+
+  // 展开书签列表，选择应用书签页码
+  getBookMarkList() {
+    let bookmarks = this.extensionContext.globalState.get("bookmarks", []);
+    if (bookmarks.length === 0) {
+      return window.showInformationMessage("没有书签");
+    }
+    let items = bookmarks
+      .filter((bookmark) => bookmark.bookTitle === this.bookTitle)
+      .map((bookmark) => {
+        return {
+          label: bookmark.describe,
+          description: bookmark.curr_page_number.toString(),
+          buttons: [
+            {
+              iconPath: new ThemeIcon("trash"),
+              tooltip: "删除书签",
+              id: bookmark.describe,
+            },
+          ],
+        };
+      });
+
+    const buttons = [
+      {
+        iconPath: new ThemeIcon("trash"),
+        tooltip: "删除所有书签",
+      },
+    ];
+
+    return new Promise((resolve) => {
+      const quickPick = window.createQuickPick();
+      quickPick.items = items;
+      quickPick.buttons = buttons;
+
+      quickPick.onDidAccept(() => {
+        const selection = quickPick.selectedItems[0];
+        if (selection) {
+          resolve(this.getJumpingPage(selection.description));
+        }
+      });
+
+      quickPick.onDidTriggerButton((button) => {
+        if (button.tooltip === "删除所有书签") {
+          // 删除所有书签
+          // 清空bookmarks
+          this.extensionContext.globalState.update("bookmarks", []).then(() => {
+            // 提示删除成功
+            window.showInformationMessage("删除所有书签成功1");
+            // 关闭quickPick
+            quickPick.hide();
+          });
+        } else if (button.tooltip === "删除书签") {
+          // 删除单个书签
+          // 从bookmarks中删除
+          let bookmarks = this.extensionContext.globalState.get(
+            "bookmarks",
+            []
+          );
+          bookmarks = bookmarks.filter(
+            (bookmark) => bookmark.describe !== quickPick.selectedItems[0].label
+          );
+          this.extensionContext.globalState
+            .update("bookmarks", bookmarks)
+            .then(() => {
+              // 提示删除成功，刷新书签列表
+              window.showInformationMessage("删除书签成功1");
+              this.getBookMarkList();
+            });
+        }
+      });
+
+      quickPick.show();
+    });
   }
 }
 
