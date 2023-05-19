@@ -34,6 +34,10 @@
       {
         "command": "thief-mud-game.getJumpingPage",
         "title": "thief-mud-game.JumpingBook"
+      },
+      {
+        "command": "thief-mud-game.reloadBook",
+        "title": "thief-mud-game.ReloadBook"
       }
     ],
     "keybindings": [

@@ -135,10 +135,26 @@ class Book {
     return this.text.substring(this.start, this.end) + "    " + page_info;
   }
 
-  getJumpingPage() {
+  getJumpingPage(pageNum) {
     // vscode弹出输入框，输入页码
     // 输入页码后，跳转到指定页码
     // 页码输入框，只能输入数字
+
+    if (pageNum) {
+      this.curr_page_number = Math.max(
+        Math.min(Number(pageNum), this.totalPage),
+        1
+      );
+      this.getPage("curr");
+      this.getStartEnd();
+
+      var page_info =
+        this.curr_page_number.toString() + "/" + this.totalPage.toString();
+
+      this.updatePage();
+
+      return this.text.substring(this.start, this.end) + "    " + page_info;
+    }
 
     return window
       .showInputBox({
@@ -171,6 +187,15 @@ class Book {
 
         return this.text.substring(this.start, this.end) + "    " + page_info;
       });
+  }
+
+  async reloadBook() {
+    // 重置页码
+    await workspace
+      .getConfiguration()
+      .update("thief-mud-game.currPageNumber", 1, true);
+    this.init();
+    return this.getJumpingPage(1);
   }
 }
 

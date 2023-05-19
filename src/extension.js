@@ -70,10 +70,17 @@ function activate(context) {
     }
   );
 
+  // 重新加载数据
+  let reloadBook = commands.registerCommand("thief-mud-game.reloadBook", async () => {
+    let books = new Book(context);
+    window.setStatusBarMessage(await books.reloadBook());
+  });
+
   context.subscriptions.push(displayCode);
   context.subscriptions.push(getNextPage);
   context.subscriptions.push(getPreviousPage);
   context.subscriptions.push(getJumpingPage);
+  context.subscriptions.push(reloadBook);
 }
 
 // this method is called when your extension is deactivated
