@@ -36,9 +36,7 @@ class Book {
   }
 
   getPage(type) {
-    var curr_page = workspace
-      .getConfiguration()
-      .get("thief-mud-game.currPageNumber");
+    var curr_page = this.curr_page_number;
     var page = 0;
 
     if (type === "previous") {
@@ -109,6 +107,9 @@ class Book {
     }
     this.readFile();
     this.getSize();
+    this.curr_page_number = workspace
+      .getConfiguration()
+      .get("thief-mud-game.currPageNumber");
   }
 
   getPreviousPage() {
@@ -135,15 +136,41 @@ class Book {
   }
 
   getJumpingPage() {
-    this.getPage("curr");
-    this.getStartEnd();
+    // vscode弹出输入框，输入页码
+    // 输入页码后，跳转到指定页码
+    // 页码输入框，只能输入数字
 
-    var page_info =
-      this.curr_page_number.toString() + "/" + this.totalPage.toString();
+    return window
+      .showInputBox({
+        placeHolder: "请输入页码",
+        validateInput: (text) => {
+          if (text === "") {
+            return "请输入页码";
+          }
+          if (isNaN(Number(text))) {
+            return "请输入数字";
+          }
+        },
+      })
+      .then((value) => {
+        if (value === undefined) {
+          return;
+        }
+        // this.curr_page_number = 最大不超过总页数，最小不小于1的value
+        this.curr_page_number = Math.max(
+          Math.min(Number(value), this.totalPage),
+          1
+        );
+        this.getPage("curr");
+        this.getStartEnd();
 
-    this.updatePage();
+        var page_info =
+          this.curr_page_number.toString() + "/" + this.totalPage.toString();
 
-    return this.text.substring(this.start, this.end) + "    " + page_info;
+        this.updatePage();
+
+        return this.text.substring(this.start, this.end) + "    " + page_info;
+      });
   }
 }
 
