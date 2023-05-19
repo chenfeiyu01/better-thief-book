@@ -16,7 +16,7 @@ function activate(context) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
   console.log(
-    'Congratulations, your extension "thief-mud-game" is now active!'
+    'Congratulations, your extension "better-thief-book" is now active!'
   );
 
   // The command has been defined in the package.json file
@@ -32,19 +32,16 @@ function activate(context) {
 
   // 老板键
   let displayCode = commands.registerCommand(
-    "thief-mud-game.displayCode",
+    "better-thief-book.displayCode",
     () => {
-      let lauage_arr_list = ['Run Extension "Thief Mud Game" Success!'];
-
-      // var index = Math.floor(Math.random() * lauage_arr_list.length);
-      var index = 0;
-      window.setStatusBarMessage(lauage_arr_list[index]);
+      let books = new Book(context);
+      window.setStatusBarMessage(books.displayCode());
     }
   );
 
   // 下一页
   let getNextPage = commands.registerCommand(
-    "thief-mud-game.getNextPage",
+    "better-thief-book.getNextPage",
     () => {
       let books = new Book(context);
       window.setStatusBarMessage(books.getNextPage());
@@ -53,7 +50,7 @@ function activate(context) {
 
   // 上一页
   let getPreviousPage = commands.registerCommand(
-    "thief-mud-game.getPreviousPage",
+    "better-thief-book.getPreviousPage",
     () => {
       let books = new Book(context);
       window.setStatusBarMessage(books.getPreviousPage());
@@ -62,7 +59,7 @@ function activate(context) {
 
   // 跳转某个页面
   let getJumpingPage = commands.registerCommand(
-    "thief-mud-game.getJumpingPage",
+    "better-thief-book.getJumpingPage",
     async () => {
       let books = new Book(context);
       const content = await books.getJumpingPage();
@@ -72,7 +69,7 @@ function activate(context) {
 
   // 重新加载数据
   let reloadBook = commands.registerCommand(
-    "thief-mud-game.reloadBook",
+    "better-thief-book.reloadBook",
     async () => {
       let books = new Book(context);
       window.setStatusBarMessage(await books.reloadBook());
@@ -81,7 +78,7 @@ function activate(context) {
 
   // 添加书签
   let addBookMark = commands.registerCommand(
-    "thief-mud-game.addBookMark",
+    "better-thief-book.addBookMark",
     async () => {
       let books = new Book(context);
       // 调用添加书签的方法
@@ -92,7 +89,7 @@ function activate(context) {
 
   // 展示书签列表
   let showBookMarkList = commands.registerCommand(
-    "thief-mud-game.showBookMarkList",
+    "better-thief-book.showBookMarkList",
     async () => {
       let books = new Book(context);
       // 打开下拉列表，展示书签列表

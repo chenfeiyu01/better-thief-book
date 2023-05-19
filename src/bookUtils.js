@@ -14,6 +14,7 @@ class Book {
     this.extensionContext;
     this.extensionContext = extensionContext;
     this.bookTitle = "";
+    this.showBook = true;
 
     this.text = "";
 
@@ -63,7 +64,7 @@ class Book {
   updatePage() {
     workspace
       .getConfiguration()
-      .update("thief-mud-game.currPageNumber", this.curr_page_number, true);
+      .update("better-thief-book.currPageNumber", this.curr_page_number, true);
   }
 
   getStartEnd() {
@@ -82,7 +83,7 @@ class Book {
 
     var line_break = workspace
       .getConfiguration()
-      .get("thief-mud-game.lineBreak");
+      .get("better-thief-book.lineBreak");
 
     this.text = data
       .toString()
@@ -93,13 +94,15 @@ class Book {
   }
 
   init() {
-    this.filePath = workspace.getConfiguration().get("thief-mud-game.filePath");
+    this.filePath = workspace
+      .getConfiguration()
+      .get("better-thief-book.filePath");
     var is_english = workspace
       .getConfiguration()
-      .get("thief-mud-game.isEnglish");
+      .get("better-thief-book.isEnglish");
     const pageSize = workspace
       .getConfiguration()
-      .get("thief-mud-game.pageSize");
+      .get("better-thief-book.pageSize");
 
     if (is_english === true) {
       this.page_size = pageSize * 2;
@@ -111,7 +114,7 @@ class Book {
     this.getSize();
     this.curr_page_number = workspace
       .getConfiguration()
-      .get("thief-mud-game.currPageNumber");
+      .get("better-thief-book.currPageNumber");
   }
 
   getPreviousPage() {
@@ -191,11 +194,22 @@ class Book {
       });
   }
 
+  displayCode() {
+    this.showBook = !this.showBook;
+    const lauage_arr_list = ['Run Extension "Thief Mud Game" Success!'];
+    const index = 0;
+    if (!this.showBook) {
+      return lauage_arr_list[index];
+    } else {
+      return this.getJumpingPage(this.curr_page_number);
+    }
+  }
+
   async reloadBook() {
     // 重置页码
     await workspace
       .getConfiguration()
-      .update("thief-mud-game.currPageNumber", 1, true);
+      .update("better-thief-book.currPageNumber", 1, true);
     this.init();
     return this.getJumpingPage(1);
   }

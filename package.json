@@ -1,6 +1,6 @@
 {
-  "name": "thief-mud-game",
-  "displayName": "thief-mud-game",
+  "name": "better-thief-book",
+  "displayName": "better-thief-book",
   "description": "",
   "version": "0.0.1",
   "engines": {
@@ -10,69 +10,65 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:thief-mud-game.helloWorld"
+    "onCommand:better-thief-book.helloWorld"
   ],
   "main": "./src/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "thief-mud-game.helloWorld",
-        "title": "Hello World"
+        "command": "better-thief-book.displayCode",
+        "title": "better-thief-book.老板键"
       },
       {
-        "command": "thief-mud-game.displayCode",
-        "title": "thief-mud-game.DisplayCode"
+        "command": "better-thief-book.getPreviousPage",
+        "title": "better-thief-book.上一页"
       },
       {
-        "command": "thief-mud-game.getPreviousPage",
-        "title": "thief-mud-game.PreviousBook"
+        "command": "better-thief-book.getNextPage",
+        "title": "better-thief-book.下一页"
       },
       {
-        "command": "thief-mud-game.getNextPage",
-        "title": "thief-mud-game.NextBook"
+        "command": "better-thief-book.getJumpingPage",
+        "title": "better-thief-book.快捷翻页"
       },
       {
-        "command": "thief-mud-game.getJumpingPage",
-        "title": "thief-mud-game.JumpingBook"
+        "command": "better-thief-book.reloadBook",
+        "title": "better-thief-book.重新加载（更换书籍时使用）"
       },
       {
-        "command": "thief-mud-game.reloadBook",
-        "title": "thief-mud-game.ReloadBook"
+        "command": "better-thief-book.addBookMark",
+        "title": "better-thief-book.添加书签"
       },
       {
-        "command": "thief-mud-game.addBookMark",
-        "title": "thief-mud-game.AddBookMark"
-      },
-      {
-        "command": "thief-mud-game.showBookMarkList",
-        "title": "thief-mud-game.ShowBookMarkList"
+        "command": "better-thief-book.showBookMarkList",
+        "title": "better-thief-book.打开书签列表"
       }
     ],
     "keybindings": [
       {
-        "command": "thief-mud-game.getPreviousPage",
+        "command": "better-thief-book.getPreviousPage",
         "key": "ctrl+alt+,",
         "mac": "cmd+,",
         "when": "editorTextFocus"
       },
       {
-        "command": "thief-mud-game.getNextPage",
+        "command": "better-thief-book.getNextPage",
         "key": "ctrl+alt+.",
         "mac": "cmd+.",
         "when": "editorTextFocus"
       },
       {
-        "command": "thief-mud-game.getJumpingPage",
+        "command": "better-thief-book.getJumpingPage",
         "key": "ctrl+alt+;",
         "mac": "cmd+;"
       },
       {
-        "command": "thief-mud-game.displayCode",
+        "command": "better-thief-book.displayCode",
         "key": "ctrl+m",
         "mac": "cmd+m"
       },
       {
-        "command": "thief-mud-game.addBookMark",
+        "command": "better-thief-book.addBookMark",
         "key": "ctrl+alt+'",
         "mac": "cmd+'"
       }
@@ -80,27 +76,27 @@
     "configuration": {
       "title": "Thief Mud Game",
       "properties": {
-        "thief-mud-game.currPageNumber": {
+        "better-thief-book.currPageNumber": {
           "type": "number",
           "default": 1,
           "description": "当前小说页数(支持跳转) & Pages of Current Novels (Support jumping)"
         },
-        "thief-mud-game.pageSize": {
+        "better-thief-book.pageSize": {
           "type": "number",
           "default": 50,
           "description": "每页文字数量 & Number of text per page"
         },
-        "thief-mud-game.isEnglish": {
+        "better-thief-book.isEnglish": {
           "type": "boolean",
           "default": false,
           "description": "是否为英文书籍？ & Is it an English book？"
         },
-        "thief-mud-game.lineBreak": {
+        "better-thief-book.lineBreak": {
           "type": "string",
           "default": " ",
           "description": "换行分隔符号，默认一个空格 & Line Break Separation Symbol,Default a space"
         },
-        "thief-mud-game.filePath": {
+        "better-thief-book.filePath": {
           "type": "string",
           "default": "/Users/chenfeiyu/Downloads/song_of_ice_and_fire.txt",
           "description": "TXT格式小说绝对路径 & Absolute Path of TXT Format Novels"

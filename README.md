@@ -1,6 +1,6 @@
-# thief-mud-game README
+# better-thief-book README
 
-This is the README for your extension "thief-mud-game". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "better-thief-book". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
