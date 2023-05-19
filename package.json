@@ -2,7 +2,7 @@
   "name": "better-thief-book",
   "displayName": "better-thief-book",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -12,6 +12,11 @@
   "activationEvents": [
     "onCommand:better-thief-book.helloWorld"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chenfeiyu01/better-thief-book"
+  },
+  "publisher": "ChenFeiyu",
   "main": "./src/extension.js",
   "contributes": {
     "commands": [
